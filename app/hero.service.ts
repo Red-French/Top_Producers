@@ -7,6 +7,7 @@ import { HEROES } from './mock-heroes';  // import the mock data
 
 export class HeroService {
   getHeroes(): Promise<Hero[]> {
+    console.log('inside getHeroes');
     return Promise.resolve(HEROES);  // return the mock data
   }
 
@@ -16,5 +17,10 @@ export class HeroService {
     setTimeout(resolve, 5000)) // delay 5 seconds
     .then(() => this.getHeroes());
 }
+
+  getHero(id: number): Promise<Hero> {
+    return this.getHeroes()
+      .then(heroes => heroes.find(hero => hero.id === id));
+  }
 
 }
