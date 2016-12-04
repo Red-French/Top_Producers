@@ -62,13 +62,7 @@ import { HeroService } from './hero.service';
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
   }
-  `],
-  providers: [HeroService]  // You have to teach the injector how to make a HeroService by registering a HeroService provider.
-                            // Do that by adding a providers array property to the bottom of the component metadata in the
-                            // @Component call.
-                            // The providers array tells Angular to create a fresh instance of the HeroService when it creates
-                            // a new AppComponent. The AppComponent can use that service to get heroes and so can every child
-                            // component of its component tree.
+  `]
 })
 
 export class HeroesComponent implements OnInit {
