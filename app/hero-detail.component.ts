@@ -1,21 +1,40 @@
-import { Component, Input } from '@angular/core';
-import { Hero } from './hero';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Params }   from '@angular/router';
+import { Location }                 from '@angular/common';
 
-// The HeroDetailComponent should receive the hero from the AppComponent and display that hero's detail beneath the list. The detail should update every time the user picks a new hero.
+import { Hero } from './hero';
+import { HeroService } from './hero.service';
+
+import 'rxjs/add/operator/switchMap';
+
 
 @Component({  // decorator
+  moduleId: module.id,
   selector: 'my-hero-detail',
-  template: `
-    <div *ngIf="hero">
-      <h2>{{hero.name}} details!</h2>
-      <div><label>id: </label>{{hero.id}}</div>
-      <div><label>name: </label>
-        <input [(ngModel)]="hero.name" placeholder="name">
-      </div>
-    </div>
-  `
+  templateUrl: 'hero-detail.component.html',
 })
-export class HeroDetailComponent {
+
+
+export class HeroDetailComponent implements OnInit {
   @Input()
   hero: Hero;
+
+  constructor(
+    private heroService: HeroService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params
+      .switchMap((params: Params) => this.heroService.getHero(+params['id']))  // The hero id is a number, and route parameters are
+                                                                               // always strings, so convert the route parameter
+                                                                               // to a number with the JavaScript (+) operator.
+      .subscribe(hero => this.hero = hero);
+  }
+
+  goBack(): void {
+  this.location.back();
+}
+
 }
